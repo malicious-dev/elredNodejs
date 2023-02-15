@@ -1,6 +1,6 @@
 
 Todo:
-  ☐  Users must be able to login / logout using email ID and Password. OTP should be sent to email ID. User Session and Authentication should be taken care of. Please create an API endpoint for the same
+  ✔  Users must be able to login / logout using email ID and Password. OTP should be sent to email ID. User Session and Authentication should be taken care of. Please create an API endpoint for the same @done(23-02-15 15:07)
   ☐  Create a POST API,  where logged in users can post any Task. The following are the required fields : Date, Task : String,  Status : Completed / Incomplete. The task is basically a string which contains the task. Eg : Swimming for one hour @started(23-02-15 14:38)
   ☐ Create a Patch API where a logged in user must have the provision to edit the Task. He should have the provision to edit one or more parameters of the Task Object. Eg : Date, Task or Status @started(23-02-15 14:38)
   ✔ Create a GET API where you can view all the posted tasks @done(23-02-15 14:38)

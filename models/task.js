@@ -14,6 +14,10 @@ const userSchema = new Mongoose.Schema({
       return new Date(input).toISOString().split('T')[0] >= new Date().toISOString().split('T')[0];
   }, 'Date must be current or Above'],  
   },
+  userId: {
+    type: String,
+    required: true,
+  },
   status: {
     type: String,
     enum: ["Incomplete", "Completed"],

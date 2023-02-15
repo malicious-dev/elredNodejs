@@ -4,12 +4,15 @@ const Task = require("../models/task");
 const createTask = async (req, res) => {
   try {
     const { task, date, status } = req.body;
+    const userId = req.user.id;
+    console.log(userId)
     if (!task || !date || !status) {
       return res.status(401).json({ status:401, message: 'Please fill all fields' });
     }
     const newTask = await Task.create({
       task,
       date,
+      userId,
       status,
     });
     res.status(200).json({ status: 200, message: "Task Created Successfully", data: newTask });
@@ -21,7 +24,8 @@ const createTask = async (req, res) => {
 //get all tasks
 const getAllTasks = async (req, res) => {
   try {
-    const tasks = await Task.find();
+    const userId = req.user.id;
+    const tasks = await Task.find({userId});
     // if not data found 
     if (tasks.length <= 0) {
       return res.status(404).json({ status: 404, message: "No Task Found"})
@@ -107,7 +111,19 @@ const deleteTask = async (req, res) => {
   }
 }
 
-
+//get all tasks
+const allTask = async (req, res) => {
+  try {
+    const tasks = await Task.find();
+    // if not data found
+    if (tasks.length <= 0) {
+      return res.status(404).json({ status: 404, message: "No Task Found"})
+    }
+    res.status(200).json({status: 200, data: tasks});
+  } catch (err) {
+    res.status(400).json({ status: 400, message: err.message });
+  }
+}
 
 module.exports = {
   createTask,
@@ -115,4 +131,5 @@ module.exports = {
   getSingleTask,
   updateTask,
   deleteTask,
+  allTask,
 };
