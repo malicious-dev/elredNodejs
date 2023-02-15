@@ -3,12 +3,11 @@ var jwt = require('jsonwebtoken');
 
 const auth = async (req, res, next) => {
   try{
-    const tokenCheck = req.headers.authorization
-    if(!tokenCheck){
+    const token = req.cookies.access_token;
+    if(!token){
       return res.status(403).json({status: 403, message: 'Unauthorized. Please Login! or try again Later'});
     }else {
       try{
-    const token = req.headers.authorization.split(' ')[1];
         var decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded
       }catch(err){
@@ -16,7 +15,6 @@ const auth = async (req, res, next) => {
       }
       return next()
     }
-  
   }
   catch(err){
     return res.status(500).json({status: 500, message: err.message})

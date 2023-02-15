@@ -68,6 +68,10 @@ const updateTask = async (req, res) => {
     const {task, date, status} = req.body;
     //check if task id is provided
     if(!id) return res.status(401).json({status: 401, message: "Please provide a task id"})
+    //check if task is found
+    const taskFound = await Task.findById(id);
+    if(!taskFound) return res.status(401).json({status: 401, message: "Task not found"})
+
     //check if task, date, status is found
     if(!task || !date || !status) return res.status(401).json({status: 401, message: "Please fill all fields"})
     const taskUpdate = await Task.findByIdAndUpdate(id, {
@@ -102,6 +106,7 @@ const deleteTask = async (req, res) => {
     res.status(400).json({status: 400, message: err.message})
   }
 }
+
 
 
 module.exports = {
