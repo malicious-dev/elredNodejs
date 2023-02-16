@@ -25,7 +25,8 @@ const createTask = async (req, res) => {
 const getAllTasks = async (req, res) => {
   try {
     const userId = req.user.id;
-    const tasks = await Task.find({userId});
+    const sort = { task: 1 };
+    const tasks = await Task.find({userId}).sort(sort);
     // if not data found 
     if (tasks.length <= 0) {
       return res.status(404).json({ status: 404, message: "No Task Found"})

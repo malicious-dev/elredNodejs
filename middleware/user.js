@@ -78,7 +78,7 @@ const login = async(req, res) => {
                .cookie('access_token', token, {
             httpOnly: true, 
           })
-            .json({status: 200, message: "Login Successfully!!"})
+            .json({status: 200, message: "OTP Send Successfully!!"})
           }
           catch(error){
             return res.status(400).json({status: 400, message: error.message})
@@ -90,7 +90,7 @@ const login = async(req, res) => {
   }
     )
   }else {
-    return res.status(401).json({status: 401, message: "Customer is not registered!!!"})
+    return res.status(401).json({status: 401, message: "User is not registered!!!"})
   }
 }catch(error){
   return res.status(400).json({status: 400, message: error.message})
@@ -113,6 +113,12 @@ const verifyOtp = async(req, res) => {
     const otpDdata = await OtpModel.findOne({email})
     console.log(otpDdata)
     if(otpDdata){
+      const time = otpDdata.createdAt.getTime() + 600000
+      console.log(time)
+      const currentTime = new Date().getTime()
+      if(currentTime > time){
+        return res.status(401).json({status: 401, message: "Otp is expired!!"})
+      }
       if(otpDdata.otp == otp){
         await OtpModel.findByIdAndDelete(otpDdata._id)
         return res.status(200).json({status: 200, message: "Otp Verified Successfully!!"})
