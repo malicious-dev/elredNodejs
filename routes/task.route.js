@@ -6,7 +6,8 @@ const {
   getSingleTask,
   updateTask,
   deleteTask,
-  allTask
+  allTask,
+  updateSequence
 } = require("../middleware/task");
 
 const {auth} = require("../auth/auth");
@@ -17,6 +18,7 @@ router.get("/allTaskById", auth, getAllTasks);
 router.get("/:id", auth, getSingleTask);
 router.patch("/update/:id", auth, updateTask);
 router.delete("/delete/:id", auth, deleteTask);
+router.post("/updateSequence", auth, updateSequence);
 
 
 module.exports = router
