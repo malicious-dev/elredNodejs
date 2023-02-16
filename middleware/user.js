@@ -20,7 +20,7 @@ const register = async (req, res) => {
     const {fullname, email, password} = req.body;
     if(!fullname || !email || !password) {
       return res.status(401).json({status: 401, message: 'Please fill all fields'})
-    }
+    } 
     const user = await User.findOne({email})
     if (user){
       return res.status(401).json({status: 401, message: 'Email already exists. Please Login.'})
