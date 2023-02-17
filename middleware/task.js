@@ -114,18 +114,18 @@ const deleteTask = async (req, res) => {
 }
 
 //get all tasks
-const allTask = async (req, res) => {
-  try {
-    const tasks = await Task.find()
-    // if not data found
-    if (tasks.length <= 0) {
-      return res.status(404).json({ status: 404, message: "No Task Found"})
-    }
-    res.status(200).json({status: 200, data: tasks});
-  } catch (err) {
-    res.status(400).json({ status: 400, message: err.message });
-  }
-}
+// const allTask = async (req, res) => {
+//   try {
+//     const tasks = await Task.find()
+//     // if not data found
+//     if (tasks.length <= 0) {
+//       return res.status(404).json({ status: 404, message: "No Task Found"})
+//     }
+//     res.status(200).json({status: 200, data: tasks});
+//   } catch (err) {
+//     res.status(400).json({ status: 400, message: err.message });
+//   }
+// }
 
 //Create an API where the user can sort the posted tasks & post it in this new API with the sorted sequence of tasks
 const updateSequence = async (req, res) => {
@@ -163,7 +163,37 @@ const updateSequence = async (req, res) => {
   }
 
 
-//example to check pagination on task
+// pagination on all task
+const allTask = async (req, res) => {
+  try {
+    const tasks = await Task.find()
+    // if not data found
+    if (tasks.length <= 0) {
+      return res.status(404).json({ status: 404, message: "No Task Found"})
+    }
+    const page = parseInt(req.query.page);
+    const limit = parseInt(req.query.limit);
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const results = {};
+    if (endIndex < tasks.length) {
+      results.next = {
+        page: page + 1,
+        limit: limit
+      }
+    }
+    if (startIndex > 0) {
+      results.previous = {
+        page: page - 1,
+        limit: limit
+      }
+    }
+    results.results = tasks.slice(startIndex, endIndex);
+    res.status(200).json({status: 200, data: results});
+  } catch (err) {
+    res.status(400).json({ status: 400, message: err.message });
+  }
+}
 
       
 
