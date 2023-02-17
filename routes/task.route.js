@@ -12,7 +12,7 @@ const {
 
 const {auth} = require("../auth/auth");
 
-router.get("/allTask", allTask);
+router.get("/allTask",auth, allTask);
 router.post("/create", auth, createTask);
 router.get("/allTaskById", auth, getAllTasks);
 router.get("/:id", auth, getSingleTask);
