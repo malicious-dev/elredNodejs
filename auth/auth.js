@@ -14,10 +14,8 @@ const auth = async (req, res, next) => {
         var decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded
       //check otp is verify or not
-      console.log(decoded)
         const userData = await User.findById({_id: decoded.id})
         const otpData = await OTP.findOne({email: userData.email})
-        console.log(userData, otpData)
         if(otpData){
           return res.status(403).json({status: 403, message: 'Verify Your OTP First'});
         } 

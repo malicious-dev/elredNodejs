@@ -7,7 +7,7 @@ const {
   updateTask,
   deleteTask,
   allTask,
-  updateSequence
+  updateSequence,
 } = require("../middleware/task");
 
 const {auth} = require("../auth/auth");

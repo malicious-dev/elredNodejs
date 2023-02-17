@@ -1,4 +1,4 @@
-const {Task, TaskSequence} = require("../models/task");
+const {Task} = require("../models/task");
 
 //create task
 const createTask = async (req, res) => {
@@ -116,7 +116,7 @@ const deleteTask = async (req, res) => {
 //get all tasks
 const allTask = async (req, res) => {
   try {
-    const tasks = await Task.find().populate({ path: 'TaskSequence', options: { sort: { sequence: 1 } } }).sort('TaskSequence.sequence');
+    const tasks = await Task.find()
     // if not data found
     if (tasks.length <= 0) {
       return res.status(404).json({ status: 404, message: "No Task Found"})
@@ -127,42 +127,46 @@ const allTask = async (req, res) => {
   }
 }
 
-// POST API for updating the sequence of tasks
+//Create an API where the user can sort the posted tasks & post it in this new API with the sorted sequence of tasks
 const updateSequence = async (req, res) => {
   try {
-    const taskIds = req.body.tasks.map(task => task.id);
-    const tasks = await Task.find({ _id: { $in: taskIds } });
-    if (tasks.length !== req.body.tasks.length) {
-      return res.status(400).json({ message: 'One or more tasks not found.' });
+    const sortedTaskIds = req.body.taskIds;
+    const tasks = await Task.find({ _id: { $in: sortedTaskIds } });
+
+    // Check that all task IDs in the request were found
+    if (tasks.length !== sortedTaskIds.length) {
+      return res.status(400).json({ message: 'One or more task IDs not found' });
     }
 
-    const updatedTasks = [];
-    for (let i = 0; i < req.body.tasks.length; i++) {
-      const task = tasks.find(t => t._id.toString() === req.body.tasks[i].id);
-
-      if (!task) {
-        return res.status(400).json({ message: `Task with id ${req.body.tasks[i].id} not found.` });
-      }
-
-      task.sequence = req.body.tasks[i].sequence;
-      updatedTasks.push(task);
+    // Sort the tasks based on the order of their IDs in the request
+    const sortedTasks = [];
+    for (const taskId of sortedTaskIds) {
+      const task = tasks.find(t => t._id.equals(taskId));
+      sortedTasks.push(task);
     }
 
-    // await Promise.all(
-    //   updatedTasks.map(task => {
-    //   console.log(task)
-    //   task.save()
-    // })
-    await Promise.all(updatedTasks
-      .map(task => task.save())
-    );
+    // Update the order of the tasks in the database
+    Task.deleteMany({}).then(response => console.log(response))
+    Task.insertMany(sortedTasks).then(response => console.log(response))
 
-    return res.status(200).json({ message: 'Task sequence updated successfully.' });
-  } catch (err) {
-    return res.status(500).json({ message: 'Internal server error.' });
+    // for (let i = 0; i < sortedTaskIds.length; i++) {
+    //   const taskId = sortedTaskIds[i];
+    //   console.log(taskId);
+    //   await Task.updateOne({ _id: taskId }, { $set: { order: i } })
+    //   .then(response => console.log(response))
+    // }
+    res.json({ message: 'Tasks sorted successfully', data: sortedTasks });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred while sorting tasks' });
+  }
   }
 
-}
+
+//example to check pagination on task
+
+      
+
 
 module.exports = {
   createTask,
@@ -171,5 +175,5 @@ module.exports = {
   updateTask,
   deleteTask,
   allTask,
-  updateSequence
+  updateSequence,
 };

@@ -25,25 +25,10 @@ const taskSchema = new mongoose.Schema({
   },
 }, { timestamps: true })
 
-const taskSequenceSchema = new mongoose.Schema({
-
-  sequence: {
-    type: Number,
-    required: true
-  },
-  task: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Task'
-  }
-
-});
 
 const Task = mongoose.model('Task', taskSchema);
-
-const TaskSequence = mongoose.model('TaskSequence', taskSequenceSchema);
 
 
 module.exports = {
   Task,
-  TaskSequence
 };
