@@ -139,12 +139,12 @@ const updateSequence = async (req, res) => {
     }
 
     // Sort the tasks based on the order of their IDs in the request
-    const sortedTasks = [];
+    var sortedTasks = [];
     for (const taskId of sortedTaskIds) {
       const task = tasks.find(t => t._id.equals(taskId));
       sortedTasks.push(task);
     }
-
+console.log("sortedTasks",sortedTasks)
     // Update the order of the tasks in the database
     Task.deleteMany({}).then(response => console.log(response))
     Task.insertMany(sortedTasks).then(response => console.log(response))
