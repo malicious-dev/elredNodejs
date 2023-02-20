@@ -149,12 +149,6 @@ console.log("sortedTasks",sortedTasks)
     Task.deleteMany({}).then(response => console.log(response))
     Task.insertMany(sortedTasks).then(response => console.log(response))
 
-    // for (let i = 0; i < sortedTaskIds.length; i++) {
-    //   const taskId = sortedTaskIds[i];
-    //   console.log(taskId);
-    //   await Task.updateOne({ _id: taskId }, { $set: { order: i } })
-    //   .then(response => console.log(response))
-    // }
     res.json({ message: 'Tasks sorted successfully', data: sortedTasks });
   } catch (error) {
     console.error(error);
