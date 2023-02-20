@@ -4,6 +4,6 @@ Todo:
   ✔  Create a POST API,  where logged in users can post any Task. The following are the required fields : Date, Task : String,  Status : Completed / Incomplete. The task is basically a string which contains the task. Eg : Swimming for one hour @started(23-02-15 14:38) @done(23-02-15 16:19) @lasted(1h41m20s)
   ✔ Create a Patch API where a logged in user must have the provision to edit the Task. He should have the provision to edit one or more parameters of the Task Object. Eg : Date, Task or Status @started(23-02-15 14:38) @done(23-02-15 16:19) @lasted(1h41m43s)
   ✔ Create a GET API where you can view all the posted tasks @done(23-02-15 14:38)
-  ☐ Also Create an API where the user can sort the posted tasks & post it in this new API with the sorted sequence of tasks. ( Please note that in this new API, the user will post the task id in the sorted sequence ) @started(23-02-15 14:38)
+  ✔ Also Create an API where the user can sort the posted tasks & post it in this new API with the sorted sequence of tasks. ( Please note that in this new API, the user will post the task id in the sorted sequence ) @started(23-02-15 14:38) @done(23-02-15 01:36) @lasted(1d10h58m47s)
   ✔ Please host these APIs on any free server / Amazon Test Account @started(23-02-15 14:38) @done(23-02-16 17:53) @lasted(1d3h15m55s)
   ✔ Create a delete API where the user must have provision to delete a particular task. @started(23-02-15 16:18) @done(23-02-15 16:18) @lasted(55s)
