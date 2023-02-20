@@ -8,11 +8,11 @@ const taskSchema = new mongoose.Schema({
   date: {
     type: Date,
     required: true,
-    validate: [function(input, err) {
-      /* return true only if the input is a valid date, AND is 
-      greater than or equal to the current date/time */
-      return new Date(input).toISOString().split('T')[0] >= new Date().toISOString().split('T')[0];
-  }, 'Date must be current or Above'],  
+  //   validate: [function(input, err) {
+  //     /* return true only if the input is a valid date, AND is 
+  //     greater than or equal to the current date/time */
+  //     return new Date(input).toISOString().split('T')[0] >= new Date().toISOString().split('T')[0];
+  // }, 'Date must be current or Above'],  
   },
   userId: {
     type: String,
