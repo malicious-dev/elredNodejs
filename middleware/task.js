@@ -146,8 +146,8 @@ const updateSequence = async (req, res) => {
     }
 console.log("sortedTasks",sortedTasks)
     // Update the order of the tasks in the database
-    Task.deleteMany({}).then(response => console.log(response))
-    Task.insertMany(sortedTasks).then(response => console.log(response))
+    await Task.deleteMany({}).then(response => console.log(response))
+    await Task.insertMany(sortedTasks).then(response => console.log(response))
 
     res.json({ message: 'Tasks sorted successfully', data: sortedTasks });
   } catch (error) {
