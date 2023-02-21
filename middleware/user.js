@@ -21,6 +21,11 @@ const register = async (req, res) => {
     if(!fullname || !email || !password) {
       return res.status(401).json({status: 401, message: 'Please fill all fields'})
     } 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    console.log(emailRegex.test(email))
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ message: 'Invalid email address' });
+  }
     const user = await User.findOne({email})
     if (user){
       return res.status(401).json({status: 401, message: 'Email already exists. Please Login.'})
@@ -48,6 +53,11 @@ const login = async(req, res) => {
     const otp = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
     if(!email ||!password) {
       return res.status(401).json({status: 401, message: 'Please fill all fields'})
+    }
+    const validKeys = ['email', 'password'];
+    const extraKeys = Object.keys(req.body).filter(key => !validKeys.includes(key));
+    if (extraKeys.length > 0) {
+      return res.status(400).json({ message: 'Extra or invalid key passed' });
     }
     const user = await User.findOne({email})
     if (user){
@@ -110,6 +120,12 @@ const logout = async(req, res) => {
 const verifyOtp = async(req, res) => {
   try{
     const {email, otp} = req.body;
+    const validKeys = ['email', 'otp'];
+    const extraKeys = Object.keys(req.body).filter(key => !validKeys.includes(key));
+    console.log(extraKeys)
+    if (extraKeys.length > 0) {
+      return res.status(400).json({ message: 'Extra or invalid key passed' });
+    }
     const otpDdata = await OtpModel.findOne({email})
     console.log(otpDdata)
     if(otpDdata){

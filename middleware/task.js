@@ -4,6 +4,12 @@ const {Task} = require("../models/task");
 const createTask = async (req, res) => {
   try {
     const { task, date, status } = req.body;
+    const validKeys = ['task', 'date', 'status'];
+    const extraKeys = Object.keys(req.body).filter(key => !validKeys.includes(key));
+    console.log(extraKeys)
+    if (extraKeys.length > 0) {
+      return res.status(400).json({ message: 'Extra or invalid key passed' });
+    }
     const userId = req.user.id;
     console.log(userId)
     if (!task || !date || !status) {
@@ -72,6 +78,12 @@ const updateTask = async (req, res) => {
   try{
     const {id} = req.params;
     const {task, date, status} = req.body;
+    const validKeys = ['task', 'date', 'status'];
+    const extraKeys = Object.keys(req.body).filter(key => !validKeys.includes(key));
+    console.log(extraKeys)
+    if (extraKeys.length > 0) {
+      return res.status(400).json({ message: 'Extra or invalid key passed' });
+    }
     //check if task id is provided
     if(!id) return res.status(401).json({status: 401, message: "Please provide a task id"})
     //check if task is found
@@ -131,6 +143,12 @@ const deleteTask = async (req, res) => {
 const updateSequence = async (req, res) => {
   try {
     const sortedTaskIds = req.body.taskIds;
+    const validKeys = ['taskIds'];
+    const extraKeys = Object.keys(req.body).filter(key => !validKeys.includes(key));
+    console.log(extraKeys)
+    if (extraKeys.length > 0) {
+      return res.status(400).json({ message: 'Extra or invalid key passed' });
+    }
     const tasks = await Task.find({ _id: { $in: sortedTaskIds } });
 
     // Check that all task IDs in the request were found
@@ -160,7 +178,9 @@ console.log("sortedTasks",sortedTasks)
 // pagination on all task
 const allTask = async (req, res) => {
   try {
-    const tasks = await Task.find()
+    const userId = req.user.id;
+    const tasks = await Task.find({userId})
+    // const tasks = await Task.find()
     // if not data found
     if (tasks.length <= 0) {
       return res.status(404).json({ status: 404, message: "No Task Found"})
